@@ -1,0 +1,14 @@
+/* NotesPanel.css */
+
+.notes-panel {
+    flex: 1;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+.note-content {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    min-height: 300px;
+}
