@@ -1,22 +1,107 @@
-/* Navbar.css */
+
+
+/* CSS para el navbar actualizado */
 
 .navbar {
+    width: 100%;
+    background-color: #007bff;
+    padding: 0.5rem 0;
+    box-sizing: border-box;
+}
+
+.navbar-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    background-color: #007bff;
-    color: white;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    width: 90%;
 }
 
 .navbar-title {
     font-size: 1.5rem;
+    color: white;
 }
+
+.search-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
 
 .search-bar {
     padding: 10px;
     font-size: 1rem;
     border-radius: 5px;
     border: none;
-    width: 250px;
+    width: 50%;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 25%;
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    list-style-type: none;
+    padding: 0;
+    width: 50%;
+}
+
+.search-results li {
+    padding: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-results li:hover {
+    background-color: #f0f0f0;
+}
+.user-menu {
+    margin-left: auto;
+}
+
+.user-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: white;
+}
+
+
+
+.user-dropdown.floating-dropdown {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: #ffffff;
+    color: #333;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    margin-top: 10px;
+}
+
+.user-dropdown ul {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+}
+
+.user-dropdown li {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.user-dropdown li:hover {
+    background-color: #f0f0f0;
 }

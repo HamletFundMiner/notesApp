@@ -1,4 +1,3 @@
-// src/main/java/com/tusnotas/notesapp/model/Usuario.java
 
 package com.example.demo.models;
 
@@ -12,7 +11,8 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String claveAcceso; // Combina correo y contraseña
+    private String email;
+    private String contrasena;
     private String nombre;
 
     // Getters y setters
@@ -24,12 +24,20 @@ public class Usuario {
         this.id = id;
     }
 
-    public String getClaveAcceso() {
-        return claveAcceso;
+    public String getEmail() {
+        return email;
     }
 
-    public void setClaveAcceso(String claveAcceso) {
-        this.claveAcceso = claveAcceso;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
     public String getNombre() {
@@ -40,14 +48,13 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-
     @Override
     public String toString() {
         return "{" +
             " id='" + getId() + "'" +
-            ", claveAcceso='" + getClaveAcceso() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", contrasena='" + getContrasena() + "'" +
             ", nombre='" + getNombre() + "'" +
             "}";
     }
-
 }

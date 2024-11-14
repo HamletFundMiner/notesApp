@@ -1,11 +1,17 @@
 package com.example.demo.controllers;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,10 +48,53 @@ public class NotaController {
     }
 
 
-       @GetMapping("/search")
-    public ResponseEntity<List<Nota>> searchNotas(@RequestParam String term) {
-        List<Nota> notas = notaRepository.findByTituloOrContenido(term);
+    @GetMapping("/search")
+    public ResponseEntity<List<Nota>> searchNotas(@RequestParam String keyword) {
+        List<Nota> notas = notaRepository.findByTituloOrContenido(keyword);
         return ResponseEntity.ok(notas);
+    }
+
+      @PostMapping("/create")
+    public ResponseEntity<Nota> createNota(@RequestParam Long userId, @RequestBody Nota notaRequest) {
+        Usuario usuario = usuarioRepository.findById(userId).orElse(null);
+        if (usuario == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        notaRequest.setOwner(usuario);
+        notaRequest.setCreatedAt(new Date());
+        notaRequest.setUpdatedAt(new Date());
+        Nota nuevaNota = notaRepository.save(notaRequest);
+        return ResponseEntity.ok(nuevaNota);
+    }
+
+    // Endpoint para editar una nota existente
+    @PutMapping("/edit/{notaId}")
+    public ResponseEntity<Nota> editNota(@PathVariable Long notaId, @RequestBody Nota notaDetails) {
+        Optional<Nota> optionalNota = notaRepository.findById(notaId);
+        if (!optionalNota.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        Nota nota = optionalNota.get();
+        if (notaDetails.getTitulo() != null) {
+            nota.setTitulo(notaDetails.getTitulo());
+        }
+        if (notaDetails.getContenido() != null) {
+            nota.setContenido(notaDetails.getContenido());
+        }
+        nota.setUpdatedAt(new Date());
+        Nota notaActualizada = notaRepository.save(nota);
+        return ResponseEntity.ok(notaActualizada);
+    }
+
+       // Endpoint para eliminar una nota
+    @DeleteMapping("/delete/{notaId}")
+    public ResponseEntity<Void> deleteNota(@PathVariable Long notaId) {
+        Optional<Nota> optionalNota = notaRepository.findById(notaId);
+        if (!optionalNota.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        notaRepository.delete(optionalNota.get());
+        return ResponseEntity.noContent().build();
     }
     
 }

@@ -35,15 +35,26 @@ public class UsuarioController {
         }
         return ResponseEntity.ok("Bienvenido, " + usuarioActivo.getNombre() + "!");
     }
-
-    // Endpoint para iniciar sesión con clave de acceso
+    // Endpoint para iniciar sesión con email y contraseña
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody String claveAcceso) {
-        Optional<Usuario> usuarioOptional = usuarioRepository.findByClaveAcceso(claveAcceso);
-        if (usuarioOptional.isPresent()) {
-            return ResponseEntity.ok(usuarioOptional.get());
-        } else {
-            return ResponseEntity.badRequest().body("Clave de acceso incorrecta");
+    public ResponseEntity<?> login(@RequestBody Usuario loginRequest) {
+        // Primero buscamos si el usuario con el correo proporcionado existe
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(loginRequest.getEmail());
+    
+        if (!usuarioOptional.isPresent()) {
+            // Si el correo no está registrado, devolvemos un error correspondiente
+            return ResponseEntity.badRequest().body("Correo no registrado");
         }
+    
+        Usuario usuario = usuarioOptional.get();
+    
+        // Si el correo existe, verificamos la contraseña
+        if (!usuario.getContrasena().equals(loginRequest.getContrasena())) {
+            // Si la contraseña es incorrecta, devolvemos un error correspondiente
+            return ResponseEntity.badRequest().body("Contraseña incorrecta");
+        }
+    
+        // Si todo está bien, retornamos el usuario
+        return ResponseEntity.ok(usuario);
     }
 }

@@ -1,16 +1,17 @@
-/* HierarchyNotesPanel.css */
-
 .hierarchy-notes-panel {
     width: 30%;
     max-width: 300px;
     padding: 20px;
     background-color: #f7f7f7;
     border-right: 1px solid #ddd;
+    height: 95%;
 }
 
 .notes-list {
+    overflow: scroll;
     list-style-type: none;
     padding: 0;
+    height: 90%;
 }
 
 .notes-list li {
@@ -24,4 +25,10 @@
 
 .notes-list li:hover {
     background-color: #eaeaea;
+}
+
+/* Estilo para la nota seleccionada */
+.notes-list li.selected-note {
+    background-color: #007bff; /* Azul */
+    color: #ffffff; /* Blanco */
 }

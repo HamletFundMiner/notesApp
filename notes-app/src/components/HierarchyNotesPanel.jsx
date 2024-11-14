@@ -1,11 +1,10 @@
-// src/components/HierarchyNotesPanel.jsx
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './HierarchyNotesPanel.css';
 
 function HierarchyNotesPanel({ onSelectNote }) {
     const [notas, setNotas] = useState([]);
+    const [notaSeleccionada, setNotaSeleccionada] = useState(null);
 
     useEffect(() => {
         // Obtén el userId de localStorage
@@ -19,7 +18,9 @@ function HierarchyNotesPanel({ onSelectNote }) {
         const fetchNotas = async () => {
             try {
                 const response = await axios.get(`http://localhost:8080/api/notas/${userId}`);
-                setNotas(response.data);
+                // Ordenar las notas por updatedAt, las más recientes primero
+                const notasOrdenadas = response.data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+                setNotas(notasOrdenadas);
             } catch (error) {
                 console.error('Error al obtener las notas:', error);
             }
@@ -35,13 +36,24 @@ function HierarchyNotesPanel({ onSelectNote }) {
         return () => clearInterval(intervalId);
     }, []);
 
+    const handleSelectNote = (nota) => {
+        setNotaSeleccionada(nota.id);
+        onSelectNote(nota);
+    };
+
     return (
         <div className="hierarchy-notes-panel">
             <h3>Mis Notas</h3>
             <ul className="notes-list">
                 {notas.length > 0 ? (
                     notas.map((nota) => (
-                        <li key={nota.id} onClick={() => onSelectNote(nota)}>{nota.titulo}</li>
+                        <li
+                            key={nota.id}
+                            onClick={() => handleSelectNote(nota)}
+                            className={notaSeleccionada === nota.id ? 'selected-note' : ''}
+                        >
+                            {nota.titulo}
+                        </li>
                     ))
                 ) : (
                     <p>No hay notas disponibles</p>

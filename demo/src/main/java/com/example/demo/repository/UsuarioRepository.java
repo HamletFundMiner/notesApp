@@ -10,5 +10,7 @@ import com.example.demo.models.Usuario;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-    Optional<Usuario> findByClaveAcceso(String claveAcceso);
+    Optional<Usuario> findByEmailAndContrasena(String email, String contrasena);
+
+    Optional<Usuario> findByEmail(String email);
 }
