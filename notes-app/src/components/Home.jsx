@@ -9,6 +9,7 @@ import './Home.css';
 
 function Home() {
     const [selectedNote, setSelectedNote] = useState(null);
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -24,12 +25,17 @@ function Home() {
         setSelectedNote(nota);
     };
 
+    const handleCreateNote = () => {
+        // Trigger para refrescar las notas en HierarchyNotesPanel
+        setRefreshTrigger((prev) => prev + 1);
+    };
+
     return (
-        <div className="home-page" >
+        <div className="home-page">
             <Navbar className="nav-bar" onSelectNote={handleSelectNote} />
             <div className="home-content">
-                <HierarchyNotesPanel onSelectNote={handleSelectNote} />
-                <NotesPanel note={selectedNote} />
+                <HierarchyNotesPanel onSelectNote={handleSelectNote} refreshTrigger={refreshTrigger} />
+                <NotesPanel note={selectedNote} onCreateNote={handleCreateNote} />
             </div>
         </div>
     );

@@ -33,7 +33,10 @@ function Register() {
 
             if (response.status === 201) {
                 // Registro exitoso, redirigir al login
-                navigate('/login');
+                localStorage.setItem('userId', response.data.id);
+                localStorage.setItem('userEmail', usuario.email);
+
+                navigate('/home');
             }
         } catch (error) {
             if (error.response) {

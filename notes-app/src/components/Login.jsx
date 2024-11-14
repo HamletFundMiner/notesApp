@@ -40,6 +40,8 @@ function Login() {
                 // Guarda el userId en localStorage
                 const usuario = response.data;
                 localStorage.setItem('userId', usuario.id);
+                localStorage.setItem('userEmail', usuario.email);
+
                 // Redirige a la página de inicio si el login es exitoso
                 navigate('/home');
             }

@@ -13,7 +13,8 @@ import com.example.demo.models.Usuario;
 @Repository
 public interface NotaRepository extends JpaRepository<Nota, Long> {
     List<Nota> findByOwnerId(Long ownerId);    
-
-    @Query("SELECT n FROM Nota n WHERE LOWER(n.titulo) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR LOWER(n.contenido) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
-    List<Nota> findByTituloOrContenido(String searchTerm);
+    
+    @Query("SELECT n FROM Nota n WHERE n.owner.id = :userId AND (LOWER(n.titulo) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR LOWER(n.contenido) LIKE LOWER(CONCAT('%', :searchTerm, '%')))")
+    List<Nota> findByOwnerIdAndTituloOrContenido(Long userId, String searchTerm);
+    
 }

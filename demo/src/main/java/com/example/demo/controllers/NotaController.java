@@ -49,10 +49,11 @@ public class NotaController {
 
 
     @GetMapping("/search")
-    public ResponseEntity<List<Nota>> searchNotas(@RequestParam String keyword) {
-        List<Nota> notas = notaRepository.findByTituloOrContenido(keyword);
+    public ResponseEntity<List<Nota>> searchNotas(@RequestParam Long userId, @RequestParam String keyword) {
+        List<Nota> notas = notaRepository.findByOwnerIdAndTituloOrContenido(userId, keyword);
         return ResponseEntity.ok(notas);
     }
+    
 
       @PostMapping("/create")
     public ResponseEntity<Nota> createNota(@RequestParam Long userId, @RequestBody Nota notaRequest) {

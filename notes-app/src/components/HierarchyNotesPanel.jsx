@@ -1,8 +1,10 @@
+// src/components/HierarchyNotesPanel.jsx
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './HierarchyNotesPanel.css';
 
-function HierarchyNotesPanel({ onSelectNote }) {
+function HierarchyNotesPanel({ onSelectNote, refreshTrigger }) {
     const [notas, setNotas] = useState([]);
     const [notaSeleccionada, setNotaSeleccionada] = useState(null);
 
@@ -18,9 +20,12 @@ function HierarchyNotesPanel({ onSelectNote }) {
         const fetchNotas = async () => {
             try {
                 const response = await axios.get(`http://localhost:8080/api/notas/${userId}`);
-                // Ordenar las notas por updatedAt, las más recientes primero
                 const notasOrdenadas = response.data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
                 setNotas(notasOrdenadas);
+                if (notasOrdenadas.length > 0) {
+                    // Seleccionar la nota más reciente después de la creación
+                    handleSelectNote(notasOrdenadas[0]);
+                }
             } catch (error) {
                 console.error('Error al obtener las notas:', error);
             }
@@ -34,7 +39,7 @@ function HierarchyNotesPanel({ onSelectNote }) {
 
         // Limpia el intervalo cuando el componente se desmonta
         return () => clearInterval(intervalId);
-    }, []);
+    }, [refreshTrigger]);
 
     const handleSelectNote = (nota) => {
         setNotaSeleccionada(nota.id);
