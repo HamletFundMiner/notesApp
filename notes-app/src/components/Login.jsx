@@ -18,8 +18,11 @@ function Login() {
                     'Content-Type': 'application/json'
                 }
             });
-            console.log(response)
+            console.log(response);
             if (response.status === 200) {
+                // Guarda el userId en localStorage
+                const usuario = response.data;
+                localStorage.setItem('userId', usuario.id);
                 // Redirige a la página de inicio si el login es exitoso
                 navigate('/home');
             }
@@ -55,5 +58,4 @@ function Login() {
 }
 
 export default Login;
-
 
